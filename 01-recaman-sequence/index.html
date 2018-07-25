@@ -1,0 +1,28 @@
+<html>
+<head>
+    <style>
+        body {
+            margin: 0px;
+        }
+        #c,#bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="bg"></canvas>
+    <canvas id="c"></canvas>
+   <!--<script src="index.js"></script>-->
+   <script>
+   function calc(){var t=p-sp>0&&!tk[p-sp]?-1:1
+    p+=sp*t,tk[p]=!0,ns.push(p),p>max&&(max=p),sp++}var d=document,c=d.getElementById("c"),cx=c.getContext("2d"),bg=d.getElementById("bg"),bx=bg.getContext("2d")
+    h=c.height=bg.height=innerHeight/2,w=c.width=bg.width=innerWidth/2,ns=[],tk=[],sp=1,t=p=0,max=1,r=Math.random,function e(){for(bx.globalAlpha=.2,bx.fillStyle="#002",bx.fillRect(0,0,w,h),bx.globalAlpha=.5,bx.drawImage(c,6*r()-3,6*r()-3),t++%(15-t/1e3|0)==0&&calc(),cx.clearRect(0,0,w,h),cx.save(),cx.globalCompositeOperation="xor",s=w/(40*max),cx.setTransform(s,0,0,s,Math.max(0,w/3-t),h/2),ns.reduce(function(t,e){return cx.strokeStyle="#"+"ff4274,dcd549,abdfab,437432,033b45".split(",")[t%5],cx.lineWidth=20+max/10,cx.beginPath(),cx.arc(20*(t+e),0,20*Math.abs(e-t),e>t?0:3.14,t>e?0:3.14),cx.stroke(),e}),cx.restore(),cx.fillStyle="#668",x=w*h;x>0;x--)r()<.001&&cx.fillText(".",x%w,x/w)
+    requestAnimationFrame(e)}()
+    
+    </script>
+</body>
+
+</html>
