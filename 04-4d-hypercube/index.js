@@ -28,7 +28,8 @@ with(Math)(L = () => {
 
     angle-=0.001;
     angle2+=0.01;
-    c.strokeStyle = `rgb(${sin(angle2*2)*128+128},${cos(angle2)*128+128},${sin(angle2)*128+128})`;
+   // c.strokeStyle = `rgb(${sin(angle2*2)*128+128},${cos(angle2)*128+128},${sin(angle2)*128+128})`;
+    c.strokeStyle = "#fff";
 
 
     let project = (p) => {

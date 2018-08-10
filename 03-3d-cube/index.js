@@ -36,7 +36,8 @@ c.fillStyle = "rgba(0,0,0,0.1)";
 
 with(Math)(L = () => {
     angle += 0.03;
-    c.strokeStyle = `rgb(${sin(angle*2)*128+128},${cos(angle)*128+128},${sin(angle)*128+128})`;
+    //c.strokeStyle = `rgb(${sin(angle*2)*128+128},${cos(angle)*128+128},${sin(angle)*128+128})`;
+    c.strokeStyle = "#fff";
     var project = (p) => {
         var rotated = mmv([ // rot Y
             [cos(angle), 0, -sin(angle)],
