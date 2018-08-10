@@ -26,7 +26,7 @@ P = [
 ];
 
 let angle = 0;
-c.setTransform(1, 0, 0, 1, w / 2, h / 2);
+c.translate(w / 2, h / 2);
 c.fillStyle = "rgba(0,0,0,0.1)";
 
 with(Math)(L = () => {

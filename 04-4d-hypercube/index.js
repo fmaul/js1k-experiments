@@ -13,7 +13,7 @@ mm = (a, b) => a.map(x => tp(b).map(y => dp(x, y)));
 dp = (a, b) => a.map((x, i) => a[i] * b[i]).reduce((a, b) => a + b);
 tp = a => a[0].map((x, i) => a.map(y => y[i]));
 //dt = (a,b) => (a[0]-b[0])**2+(a[1]-b[1])**2+(a[2]-b[2])**2;
-dt = (a, b) => a.reduce((t, e, i) => t + (e - b[i]) ** 2, 0);
+dt = (a,b) => a.reduce((t,e,i)=>t+(e-b[i])**2,0);
 
 //P = [];
 //for (x=2;x--;) for (y=2;y--;) for (z=2;z--;) for (w=2;w--;) P.push([x,y,z,w].map(x=>x*2-1))
@@ -22,7 +22,7 @@ P = [];for(i=16; i--;)P.push([i%2,i%4<2?0:1,i%8<4?0:1,i<8?0:1].map(x=>x*2-1))
 
 let angle=1
 let angle2 = 1;
-c.setTransform(1, 0, 0, 1, w / 2, h / 2);
+c.translate(w / 2, h / 2);
 
 with(Math)(L = () => {
 
