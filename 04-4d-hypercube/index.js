@@ -1,13 +1,8 @@
 h = a.height;
 w = a.width;
 
-vm = (a) => a.map(e => [e]);
-mv = (m) => {
-    let v = [m[0][0], m[1][0]];
-    if (m.length > 2) v.push(m[2][0]);
-    if (m.length > 3) v.push(m[3][0]);
-    return v;
-}
+vm = a => a.map(e => [e]);
+mv = a => a.map(e => e[0]);
 mmv = (a, b) => mv(mm(a, vm(b)));
 mm = (a, b) => a.map(x => tp(b).map(y => dp(x, y)));
 dp = (a, b) => a.map((x, i) => a[i] * b[i]).reduce((a, b) => a + b);
@@ -20,8 +15,8 @@ dt = (a,b) => a.reduce((t,e,i)=>t+(e-b[i])**2,0);
 //P.push([x*2-1,y*2-1,z*2-1,w*2-1]);
 P = [];for(i=16; i--;)P.push([i%2,i%4<2?0:1,i%8<4?0:1,i<8?0:1].map(x=>x*2-1))
 
-let angle=1
-let angle2 = 1;
+var angle=1
+var angle2 = 1;
 c.translate(w / 2, h / 2);
 
 with(Math)(L = () => {
@@ -32,8 +27,8 @@ with(Math)(L = () => {
     c.strokeStyle = "#fff";
 
 
-    let project = (p) => {
-        let rotated4D = mmv([
+    var project = (p) => {
+        var rotated4D = mmv([
             [cos(angle2/4), -sin(angle2/4)],
             [sin(angle2/4), cos(angle2/4)],
             [0, 0, cos(angle2), -sin(angle2)],
@@ -41,31 +36,31 @@ with(Math)(L = () => {
 
         ], p);
 
-        let w = 1 / (8 - rotated4D[3]);
-        let projectedTo3D = mmv([
+        var w = 1 / (8 - rotated4D[3]);
+        var projectedTo3D = mmv([
             [w, 0, 0],
             [0, w, 0],
             [0, 0, w]
         ], rotated4D);
 
-        let rotated3d = mmv([
+        var rotated3d = mmv([
             [cos(angle), 0, -sin(angle)],
             [0, 1, 0],
             [sin(angle), 0, cos(angle)]
         ],  projectedTo3D);
 
-        let z = 1 / (6-rotated3d[2]);
-        let proj2d = [
+        var z = 1 / (6-rotated3d[2]);
+        var proj2d = [
             [z, 0],
             [0, z]
         ];
 
         return mmv(proj2d, rotated3d).map(v => v * w*30000);
     }
-    let C = (i, j) => {
+    var C = (i, j) => {
         c.beginPath();
-        let a = project(P[i]);
-        let b = project(P[j]);
+        var a = project(P[i]);
+        var b = project(P[j]);
         c.moveTo(a[0], a[1]);
         c.lineTo(b[0], b[1]);
         c.stroke();
