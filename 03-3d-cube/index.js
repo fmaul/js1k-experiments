@@ -1,6 +1,6 @@
 var h = a.height;
 var w = a.width;
-var angle = 0, sin=Math.sin, cos=Math.cos;
+var angle = 0, sin=Math.sin, cos=Math.cos, ran=Math.random;
 var K=128;
 
 /*
@@ -21,6 +21,7 @@ M = (a, b) => a.map(x => b[0].map((x, i) => b.map(y => y[i])).map(y => x.map((v,
 //dt = (a,b) => (a[0]-b[0])**2+(a[1]-b[1])**2+(a[2]-b[2])**2;
 dt = (a,b) => a.reduce((t,e,i)=>t+(e-b[i])**2,0);
 
+O=[];for(i=100;i--;)O.push([ran()*w,ran()*h,ran()*3,ran()-0.5,ran()-0.5,ran()/50]);
 
 /*
 P = [
@@ -35,13 +36,11 @@ P = [
 ];
 */
 P = [];
-for(i=c.lineWidth=8; i--;)P.push([i%2,i%4<2?0:1,i%8<4?0:1].map(x=>x*2-1));
+for(i=8; i--;)P.push([i%2,i%4<2?0:1,i%8<4?0:1].map(x=>x*2-1));
 
 
 (L = () => {
-    angle += 0.03;
-
-    var project = (p) => {
+    var project = (p,angle) => {
         var rotated = M([ // rot Y
             [cos(angle), 0, -sin(angle)],
             [0, 1],
@@ -53,9 +52,9 @@ for(i=c.lineWidth=8; i--;)P.push([i%2,i%4<2?0:1,i%8<4?0:1].map(x=>x*2-1));
         ], p.map(e=>[e])));
 
         return M([
-            [z = 1 / (8 + sin(angle / 2) - rotated[2])],
-            [0, z]
-        ], rotated).map(v => v[0] * w);  // convert matrix to vector and scale it by width
+            [1],
+            [0, 1]
+        ], rotated).map(v => v[0] * w/40);  // convert matrix to vector and scale it by width
     }
     /*var C = (i, j) => {
         c.beginPath();
@@ -69,14 +68,13 @@ for(i=c.lineWidth=8; i--;)P.push([i%2,i%4<2?0:1,i%8<4?0:1].map(x=>x*2-1));
 
     //c.globalCompositeOperation = 'normal';
 
-    c.strokeStyle=c.fillStyle = "rgba(0,0,0,0.1)";
-    c.fillRect(-w , -h , 2*w,2* h);
+   // c.strokeStyle=c.fillStyle = "rgba(0,0,0,0.1)";
+  //  c.fillRect(-w , -h , 2*w,2* h);
 
 //c.globalCompositeOperation = 'lighter';
 
-   c.fillStyle = `rgb(${sin(angle*2)*K+K},${cos(angle)*K+K},${sin(angle)*K+K},0.5)`;
 
-  //  c.fillStyle = "rgba(255,0,0,0.1)";
+  // c.fillStyle = "rgba(255,0,0,0.1)";
 
     /*
     c.beginPath();
@@ -94,16 +92,19 @@ for(i=c.lineWidth=8; i--;)P.push([i%2,i%4<2?0:1,i%8<4?0:1].map(x=>x*2-1));
             if (dt(P[i], P[j]) == 4) C(i, j);
     //for (i = 4; i--;) C(i, (i + 1) % 4), C(i + 4, 4 + (i + 1) % 4), C(i, i + 4);
 */
-for (j=3;j--;) {
-    c.setTransform(1,0,0,1,w/8* sin(angle) + j * w/2, h / 3+w/8* cos(angle)**2);
-
+c.lineWidth=2;
+c.strokeStyle='rgba(0,0,0,0.1)'
+O.map(u=>{
+    c.setTransform(1,0,0,1,u[0],u[1]);
+    c.fillStyle = `rgb(${sin(u[2]*2)*K+K},${cos(u[2])*K+K},${sin(u[2])*K+K},0.5)`;
     for(i=6;i--;){
         c.beginPath();
-        P.sort(a=>a[i/2]).slice(i%2*4,4+i%2*4).map((o,i) => (o=project(o),i?c.lineTo(o[0], o[1]):c.moveTo(o[0], o[1])));
+        P.sort(a=>a[i/2]).slice(i%2*4,4+i%2*4).map((o,i) => (o=project(o,u[2]),i?c.lineTo(o[0], o[1]):c.moveTo(o[0], o[1])));
         c.closePath();
         c.fill();
         c.stroke();
+        if(i<3)u[i]+=u[i+3];
     }
-}
+});
     requestAnimationFrame(L);
 })();
