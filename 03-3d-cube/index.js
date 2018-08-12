@@ -1,5 +1,7 @@
-h = a.height;
-w = a.width;
+var h = a.height;
+var w = a.width;
+var angle = 0, sin=Math.sin, cos=Math.cos;
+var K=128;
 
 /*
 vm = (a) => a.map(e => [e]);
@@ -32,14 +34,11 @@ P = [
     [-1, 1, 1]
 ];
 */
-P = [];for(i=8; i--;)P.push([i%2,i%4<2?0:1,i%8<4?0:1].map(x=>x*2-1))
+P = [];
+for(i=c.lineWidth=8; i--;)P.push([i%2,i%4<2?0:1,i%8<4?0:1].map(x=>x*2-1));
 
 
-var angle = 0;
-c.translate(w / 2, h / 2);
-
-
-with(Math)(L = () => {
+(L = () => {
     angle += 0.03;
 
     var project = (p) => {
@@ -52,12 +51,11 @@ with(Math)(L = () => {
             [sin(angle/4), cos(angle/4)],
             [0, 0, 1]
         ], p.map(e=>[e])));
-        var z = 1 / (6 + sin(angle / 2) * 2 - rotated[2]);
 
         return M([
-            [z],
+            [z = 1 / (8 + sin(angle / 2) - rotated[2])],
             [0, z]
-        ], rotated).map(v => v[0] * w);
+        ], rotated).map(v => v[0] * w);  // convert matrix to vector and scale it by width
     }
     /*var C = (i, j) => {
         c.beginPath();
@@ -68,23 +66,15 @@ with(Math)(L = () => {
         c.stroke();
     }*/
 
-   var D = (p) => {
-    c.beginPath();
-    p.map((o,i) => (o=project(o),i?c.lineTo(o[0], o[1]):c.moveTo(o[0], o[1]))
-    );
-    c.closePath();
-    c.fill();
-    c.stroke();
 
-    }
     //c.globalCompositeOperation = 'normal';
 
-    c.lineWidth=3;
     c.strokeStyle=c.fillStyle = "rgba(0,0,0,0.1)";
-    c.fillRect(-w / 2, -h / 2, w, h);
+    c.fillRect(-w , -h , 2*w,2* h);
 
 //c.globalCompositeOperation = 'lighter';
-   c.fillStyle = `rgb(${sin(angle*2)*128+128},${cos(angle)*128+128},${sin(angle)*128+128},0.5)`;
+
+   c.fillStyle = `rgb(${sin(angle*2)*K+K},${cos(angle)*K+K},${sin(angle)*K+K},0.5)`;
 
   //  c.fillStyle = "rgba(255,0,0,0.1)";
 
@@ -104,7 +94,16 @@ with(Math)(L = () => {
             if (dt(P[i], P[j]) == 4) C(i, j);
     //for (i = 4; i--;) C(i, (i + 1) % 4), C(i + 4, 4 + (i + 1) % 4), C(i, i + 4);
 */
-    for(i=6;i--;)D(P.sort(a=>a[i/2]).slice(i%2*4,4+i%2*4));
+for (j=3;j--;) {
+    c.setTransform(1,0,0,1,w/8* sin(angle) + j * w/2, h / 3+w/8* cos(angle)**2);
 
-     requestAnimationFrame(L);
+    for(i=6;i--;){
+        c.beginPath();
+        P.sort(a=>a[i/2]).slice(i%2*4,4+i%2*4).map((o,i) => (o=project(o),i?c.lineTo(o[0], o[1]):c.moveTo(o[0], o[1])));
+        c.closePath();
+        c.fill();
+        c.stroke();
+    }
+}
+    requestAnimationFrame(L);
 })();
